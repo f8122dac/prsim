@@ -1,13 +1,10 @@
-from tkinter import Tk, Toplevel, Frame, Scale, HORIZONTAL, ALL
+from tkinter import Tk, Toplevel, Frame, Scale, HORIZONTAL
 
 from config import *
 from utils.pagerank import pagerank
 from utils.edges import randEdges
 from visualizer import Visualizer
 from report import Report
-
-class Search(Frame):
-    pass
 
 class Main(Frame):
     def __init__(self, *args, **kwargs):
