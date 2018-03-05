@@ -24,28 +24,26 @@ class Main(Frame):
         self.d.set(D)
         self.r_win = False
 
-        self.generate()
-        self.c = Visualizer(self, D, self.edges, self.p[0], offset=50)
+        self.generate_model()
+        self.c = Visualizer(self, D, self.edge_counts, self.p[0], offset=50)
         self.c.pack()
 
         self.root.bind('<Key>', self.__keys) 
 
-    def generate(self):
-        self.edges = randEdges(self.d.get(), self.e.get())
-        self.p = pagerank(self.edges)
+    def generate_model(self):
+        edges = randEdges(self.d.get(), self.e.get())
+        self.edge_counts = {e: edges.count(e) for e in set(edges)}
+        self.p = pagerank(edges)
 
     def render(self):
-        self.generate()
-        self.c.render(self.d.get(), self.edges, self.p[0])
-        try: self.r.render(self.get_ranks())
+        self.generate_model()
+        self.c.render(self.d.get(), self.edge_counts, self.p[0])
+        try: self.r.render(self.p[0])
         except: pass
 
     def refresh(self, value=None):
-        self.generate()
+        self.generate_model()
         self.render()
-
-    def get_ranks(self):
-        return tuple((k, self.p[0][k]) for k in sorted(self.p[0].keys()))
             
     def __toggle_report(self):
         if self.r_win:
@@ -55,7 +53,7 @@ class Main(Frame):
             return 
         self.r = Report(Toplevel(self))
         self.r.pack()
-        self.r.render(self.get_ranks())
+        self.r.render(self.p[0], self.edge_counts)
         self.focus_force()
         self.r_win = True
 

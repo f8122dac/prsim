@@ -15,20 +15,20 @@ class Visualizer(Canvas):
         offset *= (1-0.0075*(d-2))
         return tuple((r*cos(k*dtheta)+r+offset, r*sin(k*dtheta)+r+offset) for k in range(d))
 
-    def __init__(self, master, degree, edges, pr, color_scheme=None, radius=250, offset=0):
+    def __init__(self, master, degree, edge_counts, pr, color_scheme=None, radius=250, offset=0):
         self.color = schemes[color_scheme or default_color]
         self.radius = radius
         self.offset = offset
         super().__init__(master, 
                 width=radius*2.85+offset, height=radius*2.85+offset, 
                 bg=self.color['bg'])
-        self.render(degree, edges, pr)
+        self.render(degree, edge_counts, pr)
 
-    def render(self, degree, edges, pr):
+    def render(self, degree, edge_counts, pr):
         self.delete(ALL)
         self.size = int(60-0.7760*(degree-2))//2
-        self.edges = {e: edges.count(e) for e in set(edges)}
         self.nodes = self.ngon(degree, self.radius, self.offset)
+        self.edge_counts = edge_counts
         self.pr = pr
         self.pr_vals = tuple(sorted(set(pr.values())))
         self.ranks = {val: rank for rank, val in enumerate(self.pr_vals)}
@@ -52,7 +52,7 @@ class Visualizer(Canvas):
     def render_edges(self):
         L = 157
         l = self.size+2
-        for (head, tail), count in self.edges.items():
+        for (head, tail), count in self.edge_counts.items():
             h, t = Point(*self.nodes[head]), Point(*self.nodes[tail])
             s = (h-t).norm()
             h,t = t+(h-t)*l/s, h-(h-t)*l/s
