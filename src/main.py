@@ -38,7 +38,7 @@ class Main(Frame):
     def render(self):
         self.generate_model()
         self.c.render(self.d.get(), self.edge_counts, self.p[0])
-        try: self.r.render(self.p[0])
+        try: self.r.render(self.p[0], self.edge_counts)
         except: pass
 
     def refresh(self, value=None):
