@@ -7,4 +7,4 @@ default_color = 0
 E_MIN, E_MAX = (1, 750)
 D_MIN, D_MAX = (2, 61)
 
-REPORT_HEIGHT = 31
+REPORT_HEIGHT = 41

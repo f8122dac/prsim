@@ -1,5 +1,5 @@
-from tkinter import Frame
-from tkinter.ttk import Treeview
+from tkinter import Frame, CENTER
+from tkinter.ttk import Treeview, Scrollbar
 
 from config import *
 
@@ -9,15 +9,20 @@ class Report(Frame):
         self.root = self.winfo_toplevel()
         self.root.title(" ".join((APPNAME, VERSION, "| Report")))
         self.items= None
-        self.header = ('Page #',' PageRank Value')
+        self.header = ('Page',' PageRank Value')
         self.tree = Treeview(self, columns=self.header, show="headings", height=REPORT_HEIGHT) 
+        self.tree.column(0, anchor=CENTER, width=55)
+        self.scroll = Scrollbar(self, command=self.tree.yview)
+        self.scroll.pack(side='right', fill='y')
+        self.tree.config(yscrollcommand=self.scroll.set)
+
         for col in self.header:
             self.tree.heading(col, text=col.title())
 
     def render(self, data):
         if self.items: self.tree.delete(*self.items)
         self.items = [self.tree.insert('', 'end', values=line) for line in data]
-        self.tree.pack()
+        self.tree.pack(side='left', fill='y')
 
     def destroy(self):
         super().destroy()
