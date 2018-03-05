@@ -22,6 +22,7 @@ class Main(Frame):
         self.e.pack()
         self.d.pack()
         self.d.set(D)
+        self.r_win = False
 
         self.generate()
         self.c = Visualizer(self, D, self.edges, self.p[0], offset=50)
@@ -46,27 +47,28 @@ class Main(Frame):
     def get_ranks(self):
         return tuple((k, self.p[0][k]) for k in sorted(self.p[0].keys()))
             
-    def __open_report(self):
-        self.__close_report()
+    def __toggle_report(self):
+        if self.r_win:
+            try: self.r.destroy()
+            except: pass
+            self.r_win = False
+            return 
         self.r = Report(Toplevel(self))
         self.r.pack()
         self.r.render(self.get_ranks())
         self.focus_force()
+        self.r_win = True
 
-    def __close_report(self):
-        try: self.r.destroy()
-        except: pass
 
     def __keys(self, event):
         if event.char == 'q':
             self.destroy()
-        elif event.char == 'n':
-            self.refresh()
 
         elif event.char == 'r':
-            self.__open_report()
-        elif event.char == 'x':
-            self.__close_report()
+            self.__toggle_report()
+
+        elif event.char == 'n':
+            self.refresh()
 
         elif event.char == 'j':
             self.d.set(self.d.get()-1)
@@ -87,7 +89,8 @@ class Main(Frame):
             self.e.set(self.e.get()+40)
             
     def destroy(self):
-        self.__close_report()
+        try: self.r.destroy()
+        except: pass
         super().destroy()
         self.root.destroy()
         exit(1)
