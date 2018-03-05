@@ -1,10 +1,12 @@
-from tkinter import Tk, Toplevel, Frame, Scale, HORIZONTAL
+from tkinter import Tk, Toplevel, Scale, HORIZONTAL
+from tkinter.ttk import Frame
 
 from config import *
 from utils.pagerank import pagerank
 from utils.edges import randEdges
 from visualizer import Visualizer
 from report import Report
+from search import Search
 
 class Main(Frame):
     def __init__(self, *args, **kwargs):
@@ -23,6 +25,7 @@ class Main(Frame):
         self.d.pack()
         self.d.set(D)
         self.r_win = False
+        self.s_win = False
 
         self.generate_model()
         self.c = Visualizer(self, D, self.edge_counts, self.p[0], offset=50)
@@ -57,6 +60,16 @@ class Main(Frame):
         self.focus_force()
         self.r_win = True
 
+    def __toggle_search(self):
+        if self.s_win:
+            try: self.s.destroy()
+            except: pass
+            self.s_win = False
+            return 
+        self.s = Search(Toplevel(self))
+        self.s.pack()
+        self.focus_force()
+        self.s_win = True
 
     def __keys(self, event):
         if event.char == 'q':
@@ -64,6 +77,8 @@ class Main(Frame):
 
         elif event.char == 'r':
             self.__toggle_report()
+        elif event.char == 's':
+            self.__toggle_search()
 
         elif event.char == 'n':
             self.refresh()
