@@ -30,7 +30,7 @@ class Visualizer(Canvas):
         self.nodes = self.ngon(degree, self.radius, self.offset)
         self.edge_counts = edge_counts
         self.pr = pr
-        self.pr_vals = tuple(sorted(set(pr.values())))
+        self.pr_vals = tuple(reversed(sorted(set(pr.values()))))
         self.ranks = {val: rank for rank, val in enumerate(self.pr_vals)}
         
         self.render_nodes()
@@ -52,7 +52,7 @@ class Visualizer(Canvas):
     def render_edges(self):
         L = 157
         l = self.size+2
-        for (head, tail), count in self.edge_counts.items():
+        for (tail, head), count in self.edge_counts.items():
             h, t = Point(*self.nodes[head]), Point(*self.nodes[tail])
             s = (h-t).norm()
             h,t = t+(h-t)*l/s, h-(h-t)*l/s
