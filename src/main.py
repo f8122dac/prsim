@@ -1,4 +1,4 @@
-from tkinter import Tk, Toplevel, Menu, Scale, HORIZONTAL, font
+from tkinter import Tk, Toplevel, Menu, Scale
 from tkinter.ttk import Frame
 
 from config import *
@@ -12,7 +12,7 @@ class Main(Frame):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.root = self.winfo_toplevel()
-        self.root.option_add("*Font", "serif 10")
+        self.root.option_add("*Font", "serif 10 bold")
         self.root.title(" ".join((APPNAME, VERSION, "| Main")))
         self.root.bind('<Key>', self.__keys) 
 
@@ -38,18 +38,18 @@ class Main(Frame):
         # Scale
         self.scales = Frame(self)
         self.e = Scale(self.scales, from_=E_MIN, to=E_MAX, label='Links',
-                bd=1, width=12, length=150, orient=HORIZONTAL)
+                bd=1, width=7, length=150, orient='horizontal')
         self.d = Scale(self.scales, from_=D_MIN, to=D_MAX, label='Pages',
-                bd=1, width=12, length=150, orient=HORIZONTAL)
+                bd=1, width=7, length=150, orient='horizontal')
         self.e.set(E)
         self.e.config(command=self.refresh)
         self.d.config(command=self.refresh)
-        self.e.pack()
-        self.d.pack()
+        self.e.pack(side='left')
+        self.d.pack(side='right')
         self.d.set(D)
         self.r_win = False
         self.s_win = False
-        self.scales.pack()
+        self.scales.pack(side='top', anchor='e')
 
         # initialize model
         self.generate_model()

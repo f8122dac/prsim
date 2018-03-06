@@ -1,4 +1,3 @@
-from tkinter import CENTER, LEFT
 from tkinter.ttk import Frame, Treeview, Scrollbar
 
 from config import *
@@ -11,9 +10,9 @@ class Report(Frame):
         self.items= None
         headers = ('Page',' PageRank Value', 'Incoming')
         self.tree = Treeview(self, columns=headers, show="headings", height=REPORT_HEIGHT) 
-        self.tree.column(0, anchor=CENTER, width=55)
+        self.tree.column(0, anchor='center', width=55)
         self.tree.column(1, width=175)
-        self.tree.column(2, anchor=CENTER, width=55)
+        self.tree.column(2, anchor='center', width=55)
         self.scroll = Scrollbar(self, command=self.tree.yview)
         self.scroll.pack(side='right', fill='y')
         self.tree.config(yscrollcommand=self.scroll.set)
