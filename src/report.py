@@ -21,10 +21,11 @@ class Report(Frame):
             self.tree.heading(col, text=col.title())
 
     def render(self, pr, edge_counts):
-        ic = {k: 0 for k in pr.keys()} # incoming edges by nodes
-        for k, n in map(lambda a: (a[0][0], a[1]), edge_counts.items()):
-            ic[k] += n
-        data = tuple((k, pr[k], ic[k]) for k in sorted(pr.keys()))
+        in_count = {k: 0 for k in pr.keys()} # incoming edges by nodes
+        for (_, head), n in edge_counts.items():
+            in_count[head] += n
+
+        data = tuple((k, pr[k], in_count[k]) for k in sorted(pr.keys()))
         if self.items: self.tree.delete(*self.items)
         self.items = [self.tree.insert('', 'end', values=line) for line in data]
         self.tree.pack(side='left', fill='y')
@@ -32,3 +33,5 @@ class Report(Frame):
     def destroy(self):
         super().destroy()
         self.root.destroy()
+
+

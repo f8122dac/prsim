@@ -31,22 +31,24 @@ class Visualizer(Canvas):
         self.edge_counts = edge_counts
         self.pr = pr
         self.pr_vals = tuple(reversed(sorted(set(pr.values()))))
+        self.spectrum = spectrum(len(self.pr_vals))
         self.ranks = {val: rank for rank, val in enumerate(self.pr_vals)}
         
         self.render_nodes()
         self.render_edges()
-        self.render_colorchart(10, 10, 590, 13, spectrum(len(self.pr_vals)))
+        self.render_colorchart(10, 10, 590, 13, )
 
     def render_nodes(self):
-        sp =  spectrum(len(self.pr_vals))
         for idx, (x,y) in enumerate(self.nodes):
             if idx in self.pr.keys():
-                node_color, text_color = sp[self.ranks[self.pr[idx]]], self.color['text']
+                rank = self.ranks[self.pr[idx]]
+                node_color, text_color = self.spectrum[rank], self.color['text']
                 width = log(self.pr[idx]*370 + 1)
             else:
                 node_color, text_color = self.color['isol_node'], self.color['isol_text']
                 width = 0
-            self.create_rectangle(x-self.size, y-self.size, x+self.size, y+self.size, fill=node_color, width=width)
+            self.create_rectangle(x-self.size, y-self.size, 
+                    x+self.size, y+self.size, fill=node_color, width=width)
             self.create_text(x, y, text=str(idx), fill=text_color) 
 
     def render_edges(self):
@@ -67,11 +69,13 @@ class Visualizer(Canvas):
                     fill=self.color['edges'], width=1, smooth=True, 
                     arrow=LAST, arrowshape=(8,9,4))
 
-    def render_colorchart(self, x, y, l, w, c):
-        d = l/len(c)
+    def render_colorchart(self, x, y, l, w):
+        d = l/len(self.spectrum)
         label = (self.create_rectangle(x+w+5,y, x+w+37, y+24, fill='#DBDBDB'), 
                  self.create_rectangle(x+w+5, y+l-24, x+w+37, y+l, fill='#DBDBDB'))
         text = self.create_text(x+w+21,y+12, text='High'), self.create_text(x+w+21, y+l-12, text='Low')
         return label + text + \
-               tuple(self.create_rectangle(x, y+d*k, x+w, y+d*(k+1), fill=color, width=1) for k, color in enumerate(c)) 
-                
+               tuple(self.create_rectangle(x, y+d*k, x+w, y+d*(k+1), fill=color, width=1) 
+                       for k, color in enumerate(self.spectrum))
+
+
