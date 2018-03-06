@@ -1,4 +1,4 @@
-from tkinter import Tk, Toplevel, Menu, Scale, HORIZONTAL
+from tkinter import Tk, Toplevel, Menu, Scale, HORIZONTAL, font
 from tkinter.ttk import Frame
 
 from config import *
@@ -12,17 +12,21 @@ class Main(Frame):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.root = self.winfo_toplevel()
+        self.root.option_add("*Font", "serif 10")
         self.root.title(" ".join((APPNAME, VERSION, "| Main")))
         self.root.bind('<Key>', self.__keys) 
 
         # Menu
         menubar = Menu(self.root)
+        self.windowsmenu = Menu(menubar, tearoff=0)
+        self.windowsmenu.add_command(label="[ ] Report window", command=self.__toggle_report)
+        self.windowsmenu.add_command(label="[ ] Search window", command=self.__toggle_search)
+        self.windowsmenu.add_separator()
+        self.windowsmenu.add_command(label="Quit", command=self.destroy)
+        menubar.add_cascade(label="Windows", menu=self.windowsmenu)
         settingmenu = Menu(menubar, tearoff=0)
-        settingmenu.add_command(label="Cut")
-        settingmenu.add_command(label="Copy")
-        settingmenu.add_command(label="Paste")
-        settingmenu.add_separator()
-        settingmenu.add_command(label="Quit", command=self.destroy)
+        settingmenu.add_command(label="Spectrum range")
+        settingmenu.add_command(label="Color scheme")
         menubar.add_cascade(label="Setting", menu=settingmenu)
         helpmenu = Menu(menubar, tearoff=0)
         helpmenu.add_command(label="Help", command=self.__help)
@@ -75,23 +79,27 @@ class Main(Frame):
             try: self.r.destroy()
             except: pass
             self.r_win = False
+            self.windowsmenu.entryconfig(0, label='[ ] Report window')
             return 
         self.r = Report(Toplevel(self))
         self.r.pack()
         self.r.render(self.pagerank[0], self.edge_counts)
         self.focus_force()
         self.r_win = True
+        self.windowsmenu.entryconfig(0, label='[•] Report window ')
 
     def __toggle_search(self):
         if self.s_win:
             try: self.s.destroy()
             except: pass
             self.s_win = False
+            self.windowsmenu.entryconfig(1, label='[ ] Search window')
             return 
         self.s = Search(Toplevel(self))
         self.s.pack()
         self.focus_force()
         self.s_win = True
+        self.windowsmenu.entryconfig(1, label='[•] Search window')
 
     def __keys(self, event):
         if event.char == 'q':
