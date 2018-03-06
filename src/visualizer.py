@@ -43,7 +43,7 @@ class Visualizer(Canvas):
             if idx in self.pr.keys():
                 rank = self.ranks[self.pr[idx]]
                 node_color, text_color = self.spectrum[rank], self.color['text']
-                width = log(self.pr[idx]*370 + 1)
+                width = round(log(self.pr[idx]*370 + 1))
             else:
                 node_color, text_color = self.color['isol_node'], self.color['isol_text']
                 width = 0
