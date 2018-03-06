@@ -15,7 +15,7 @@ class Visualizer(Canvas):
         offset *= (1-0.0075*(d-2))
         return tuple((r*cos(k*dtheta)+r+offset, r*sin(k*dtheta)+r+offset) for k in range(d))
 
-    def __init__(self, master, degree, edge_counts, pr, color_scheme=None, radius=250, offset=0):
+    def __init__(self, master, degree, edge_counts, pr, color_scheme=None, radius=250, offset=50):
         self.color = schemes[color_scheme or default_color]
         self.radius = radius
         self.offset = offset
@@ -36,7 +36,7 @@ class Visualizer(Canvas):
         
         self.render_nodes()
         self.render_edges()
-        self.render_colorchart(10, 10, 590, 13, )
+        self.render_colorchart(self.offset-40, self.offset-40, self.offset+540, 13)
 
     def render_nodes(self):
         for idx, (x,y) in enumerate(self.nodes):

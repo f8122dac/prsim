@@ -17,6 +17,7 @@ class Search(Frame):
         self.tree.grid(column=0, row=1)
         self.msg = Frame(self)
         self.msg.grid(column=1, row=1)
+
     def destroy(self):
         super().destroy()
         self.root.destroy()

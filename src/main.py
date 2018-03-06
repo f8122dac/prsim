@@ -1,4 +1,4 @@
-from tkinter import Tk, Toplevel, Scale, HORIZONTAL
+from tkinter import Tk, Toplevel, Menu, Scale, HORIZONTAL
 from tkinter.ttk import Frame
 
 from config import *
@@ -13,10 +13,29 @@ class Main(Frame):
         super().__init__(*args, **kwargs)
         self.root = self.winfo_toplevel()
         self.root.title(" ".join((APPNAME, VERSION, "| Main")))
+        self.root.bind('<Key>', self.__keys) 
 
-        self.e = Scale(self, from_=E_MIN, to=E_MAX, label='Links',
+        # Menu
+        menubar = Menu(self.root)
+        settingmenu = Menu(menubar, tearoff=0)
+        settingmenu.add_command(label="Cut")
+        settingmenu.add_command(label="Copy")
+        settingmenu.add_command(label="Paste")
+        settingmenu.add_separator()
+        settingmenu.add_command(label="Quit", command=self.destroy)
+        menubar.add_cascade(label="Setting", menu=settingmenu)
+        helpmenu = Menu(menubar, tearoff=0)
+        helpmenu.add_command(label="Help", command=self.__help)
+        helpmenu.add_separator()
+        helpmenu.add_command(label="About", command=self.__about)
+        menubar.add_cascade(label="Help", menu=helpmenu)
+        self.root.config(menu=menubar)
+
+        # Scale
+        self.scales = Frame(self)
+        self.e = Scale(self.scales, from_=E_MIN, to=E_MAX, label='Links',
                 bd=1, width=12, length=150, orient=HORIZONTAL)
-        self.d = Scale(self, from_=D_MIN, to=D_MAX, label='Pages',
+        self.d = Scale(self.scales, from_=D_MIN, to=D_MAX, label='Pages',
                 bd=1, width=12, length=150, orient=HORIZONTAL)
         self.e.set(E)
         self.e.config(command=self.refresh)
@@ -26,22 +45,25 @@ class Main(Frame):
         self.d.set(D)
         self.r_win = False
         self.s_win = False
+        self.scales.pack()
 
+        # initialize model
         self.generate_model()
-        self.c = Visualizer(self, D, self.edge_counts, self.p[0], offset=50)
+        self.c = Visualizer(self, D, self.edge_counts, self.pagerank[0])
         self.c.pack()
 
-        self.root.bind('<Key>', self.__keys) 
+        # open windows
+        self.__toggle_report()
+        self.__toggle_search()
 
     def generate_model(self):
-        edges = randEdges(self.d.get(), self.e.get())
-        self.edge_counts = {e: edges.count(e) for e in set(edges)}
-        self.p = pagerank(edges)
+        edges, self.edge_counts = randEdges(self.d.get(), self.e.get())
+        self.pagerank = pagerank(edges)
 
     def render(self):
         self.generate_model()
-        self.c.render(self.d.get(), self.edge_counts, self.p[0])
-        try: self.r.render(self.p[0], self.edge_counts)
+        self.c.render(self.d.get(), self.edge_counts, self.pagerank[0])
+        try: self.r.render(self.pagerank[0], self.edge_counts)
         except: pass
 
     def refresh(self, value=None):
@@ -56,7 +78,7 @@ class Main(Frame):
             return 
         self.r = Report(Toplevel(self))
         self.r.pack()
-        self.r.render(self.p[0], self.edge_counts)
+        self.r.render(self.pagerank[0], self.edge_counts)
         self.focus_force()
         self.r_win = True
 
@@ -100,6 +122,12 @@ class Main(Frame):
             self.e.set(self.e.get()+1)
         elif event.char == 'L':
             self.e.set(self.e.get()+40)
+    
+    def __help(self):
+        pass
+    
+    def __about(self):
+        pass
             
     def destroy(self):
         try: self.r.destroy()
@@ -110,7 +138,7 @@ class Main(Frame):
 
 
 if __name__ == "__main__":
-    root = Tk()
-    s = Main(root)
+    main = Tk()
+    s = Main(main)
     s.pack()
-    root.mainloop()
+    main.mainloop()
