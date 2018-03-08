@@ -2,7 +2,7 @@ from random import shuffle
 
 # returns edges in tuple, and edge counts for each tuple of edges
 def randEdges(d, e):
-    edges = []
+    edges = [(k,k) for k in range(d)] # self identifying edges(used in pagerank function)
     for _ in range(e):
         l = list(range(d))
         shuffle(l)

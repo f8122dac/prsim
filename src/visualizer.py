@@ -32,7 +32,6 @@ class Visualizer(Canvas):
         self.pr = pr
         self.pr_vals = tuple(reversed(sorted(set(pr.values()))))
         self.spectrum = spectrum(len(self.pr_vals))
-        self.ranks = {val: rank for rank, val in enumerate(self.pr_vals)}
         
         self.render_nodes()
         self.render_edges()
@@ -40,13 +39,9 @@ class Visualizer(Canvas):
 
     def render_nodes(self):
         for idx, (x,y) in enumerate(self.nodes):
-            if idx in self.pr.keys():
-                rank = self.ranks[self.pr[idx]]
-                node_color, text_color = self.spectrum[rank], self.color['text']
-                width = round(log(self.pr[idx]*370 + 1))
-            else:
-                node_color, text_color = self.color['isol_node'], self.color['isol_text']
-                width = 0
+            rank = self.pr_vals.index(self.pr[idx])
+            node_color, text_color = self.spectrum[rank], self.color['text']
+            width = round(log(self.pr[idx]*370 + 1))
             self.create_rectangle(x-self.size, y-self.size, 
                     x+self.size, y+self.size, fill=node_color, width=width)
             self.create_text(x, y, text=str(idx), fill=text_color) 
@@ -55,19 +50,20 @@ class Visualizer(Canvas):
         L = 157
         l = self.size+2
         for (tail, head), count in self.edge_counts.items():
-            h, t = Point(*self.nodes[head]), Point(*self.nodes[tail])
-            s = (h-t).norm()
-            h,t = t+(h-t)*l/s, h-(h-t)*l/s
+            if tail is not head:
+                h, t = Point(*self.nodes[head]), Point(*self.nodes[tail])
+                s = (h-t).norm()
+                h,t = t+(h-t)*l/s, h-(h-t)*l/s
 
-            theta = (h-t).ang()
-            d = L/(count+1)
-            pl = (h+t)/2 + Point(cos(theta), -sin(theta))*(L/2)
-            ps = [pl + Point(-cos(theta),sin(theta))*d*(k+1) for k in range(count)]
+                theta = (h-t).ang()
+                d = L/(count+1)
+                pl = (h+t)/2 + Point(cos(theta), -sin(theta))*(L/2)
+                ps = [pl + Point(-cos(theta),sin(theta))*d*(k+1) for k in range(count)]
 
-            for p in ps:
-                self.create_line(*h.crd(), *p.crd(), *t.crd(), 
-                    fill=self.color['edges'], width=1, smooth=True, 
-                    arrow=LAST, arrowshape=(8,9,4))
+                for p in ps:
+                    self.create_line(*h.crd(), *p.crd(), *t.crd(), 
+                        fill=self.color['edges'], width=1, smooth=True, 
+                        arrow=LAST, arrowshape=(8,9,4))
 
     def render_colorchart(self, x, y, l, w):
         d = l/len(self.spectrum)
