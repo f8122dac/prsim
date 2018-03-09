@@ -1,5 +1,5 @@
 APPNAME = "PageRank Simulator"
-VERSION = "v0.0.1"
+VERSION = "v0.0.2"
 
 # Default settings
 E, D = 8, 5 

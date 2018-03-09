@@ -6,7 +6,7 @@ from config import default_color
 from utils.color import schemes, spectrum 
 from utils.point import Point
 
-class Visualizer(Canvas):
+class GraphViewer(Canvas):
     @staticmethod
     def ngon(d, r, offset):
         offset += 100 
@@ -15,22 +15,22 @@ class Visualizer(Canvas):
         offset *= (1-0.0075*(d-2))
         return tuple((r*cos(k*dtheta)+r+offset, r*sin(k*dtheta)+r+offset) for k in range(d))
 
-    def __init__(self, master, degree, edge_counts, pr, color_scheme=None, radius=250, offset=50):
+    def __init__(self, master, degree, edge_counts, pagerank, color_scheme=None, radius=250, offset=50):
         self.color = schemes[color_scheme or default_color]
         self.radius = radius
         self.offset = offset
         super().__init__(master, 
                 width=radius*2.85+offset, height=radius*2.85+offset, 
                 bg=self.color['bg'])
-        self.render(degree, edge_counts, pr)
+        self.render(degree, edge_counts, pagerank)
 
-    def render(self, degree, edge_counts, pr):
+    def render(self, degree, edge_counts, pagerank):
         self.delete(ALL)
         self.size = int(60-0.7760*(degree-2))//2
         self.nodes = self.ngon(degree, self.radius, self.offset)
         self.edge_counts = edge_counts
-        self.pr = pr
-        self.pr_vals = tuple(reversed(sorted(set(pr.values()))))
+        self.pr = pagerank[0][-1] 
+        self.pr_vals = tuple(reversed(sorted(set(self.pr.values()))))
         self.spectrum = spectrum(len(self.pr_vals))
         
         self.render_nodes()

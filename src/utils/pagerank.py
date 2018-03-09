@@ -1,4 +1,4 @@
-def pagerank(graph, damping=0.85, epsilon=1.0e-8):
+def pagerank(graph, damping=0.85, epsilon=1.0e-6):
     inlink_map = {}
     outlink_counts = {}
     
@@ -22,6 +22,7 @@ def pagerank(graph, damping=0.85, epsilon=1.0e-8):
             for l_node in all_nodes: inlink_map[l_node].add(node)
     
     initial_value = 1 / len(all_nodes)
+    ranks_list = []
     ranks = {}
     for node in inlink_map.keys(): ranks[node] = initial_value
     
@@ -33,7 +34,8 @@ def pagerank(graph, damping=0.85, epsilon=1.0e-8):
         for node, inlinks in inlink_map.items():
             new_ranks[node] = ((1 - damping) / len(all_nodes)) + (damping * sum(ranks[inlink] / outlink_counts[inlink] for inlink in inlinks))
         delta = sum(abs(new_ranks[node] - ranks[node]) for node in new_ranks.keys())
+        ranks_list.append(new_ranks)
         ranks, new_ranks = new_ranks, ranks
         n_iterations += 1
-    
-    return ranks, n_iterations
+
+    return ranks_list, n_iterations
