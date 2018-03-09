@@ -154,6 +154,7 @@ class Main(Frame):
         except: pass
         about_text = "{} {}\n\nUW MATH308(Linear Algebra) Winter 2018".format(APPNAME, VERSION)
         self.a = Toplevel(self)
+        self.a.title(" ".join((APPNAME, VERSION, "| About")))
         f = Frame(self.a)
         l = Label(f, text=about_text)
         b = Button(f, text='Close', command=self.a.destroy)
