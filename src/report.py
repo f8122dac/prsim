@@ -10,11 +10,11 @@ class Report(Frame):
         self.root.title(" ".join((APPNAME, VERSION, "| Report")))
         self.items= None
         headers = ('Page', 'Rank', 'PageRank Value', 'Incoming')
-        self.label = Label(self, anchor='e')
-        self.label.pack(fill='x')
-        self.t = Scale(self, from_=0, to=1, label='nth iteration',
+        self.t = Scale(self, from_=0, to=1, label='t-th iteration',
                 bd=1, width=7, orient='horizontal', command=self.__set_t)
         self.t.pack(fill='x')
+        self.label = Label(self, anchor='e')
+        self.label.pack(fill='x')
         self.tree = Treeview(self, columns=headers, show="headings", height=REPORT_HEIGHT) 
         self.tree.column(0, anchor='center', width=55)
         self.tree.column(1, anchor='center', width=55)
@@ -31,8 +31,12 @@ class Report(Frame):
     def __keys(self, event):
         if event.char == 'i':
             self.t.set(self.t.get()-1)
+        elif event.char == 'I':
+            self.t.set(0)
         elif event.char == 'o':
             self.t.set(self.t.get()+1)
+        elif event.char == 'O':
+            self.t.set(self.pagerank[1])
 
     def __set_t(self, t=None):
         self.render(self.pagerank, self.edge_counts, self.d, self.e, t=int(t))
@@ -49,15 +53,15 @@ class Report(Frame):
             self.t.set(self.pagerank[1])
             self.t.config(command=self.__set_t)
             pr = pagerank[0][-1]
-        label_text = 'Iterations:{0:>3}   Ranks:{1:>3}'.format(
-                self.pagerank[1], len(set(pr.values())))
+        label_text = '# of ranks:{0:>3}     # of iterations:{1:>3}'.format(
+                len(set(pr.values())), self.pagerank[1])
         self.label.config(text=label_text)
         in_map = {k: 0 for k in pr.keys()} # incoming edges by nodes
         for (tail, head), n in edge_counts.items():
             if tail is not head:
                 in_map[head] += n
 
-        get_rank = lambda k: len(pr.keys())-sorted(pr.values()).index(pr[k])
+        get_rank = lambda k: sorted(pr.values())[::-1].index(pr[k])+1
         data = tuple((k, get_rank(k), pr[k], in_map[k]) for k in sorted(pr.keys()))
         if self.items: self.tree.delete(*self.items)
         self.items = [self.tree.insert('', 'end', values=line) for line in data]
