@@ -92,17 +92,20 @@ class Main(Frame):
         try: self.plot_root.destroy()
         except: pass
         plt.clf()
-        plt.xticks(list(range(0, self.pagerank[1], 2)))
-        ts =  list(range(self.pagerank[1]))
+        fig = plt.figure()
+        plt.xticks(list(range(0, self.pagerank[1]+1, 3)))
+        plt.xlabel('n-th iteration')
+        plt.ylabel('PageRank value')
+        ts =  list(range(self.pagerank[1]+1))
         ps = [[p[k] for p in self.pagerank[0]] for k in self.pagerank[0][0].keys()]
-        fig = [plt.plot(ts, ps[i]) for i in range(len(ps))][-1][-1].figure
+        for i in range(len(ps)):
+            plt.plot(ts, ps[i])
         _, _, w, h = fig.bbox.bounds
-        fig.text(0,0,'PageRank vector at each iteration')
 
         self.plot_root = Toplevel(self)
         self.plot_root.title(" ".join((APPNAME, VERSION, "| Plot")))
         c = Canvas(self.plot_root, width=w, height=h)
-        self.fig = draw_figure(c, fig)
+        self.plot_fig = draw_figure(c, fig)
         c.pack()
         self.focus_force()
 

@@ -1,3 +1,4 @@
+from tkinter import Scale
 from tkinter.ttk import Frame, Label, Treeview, Scrollbar
 
 from config import *
@@ -11,6 +12,9 @@ class Report(Frame):
         headers = ('Page',' PageRank Value', 'Incoming')
         self.label = Label(self, anchor='e')
         self.label.pack(fill='x')
+        self.t = Scale(self, from_=0, to=1, label='nth iteration',
+                bd=1, width=7, orient='horizontal', command=self.__set_t)
+        self.t.pack(fill='x')
         self.tree = Treeview(self, columns=headers, show="headings", height=REPORT_HEIGHT) 
         self.tree.column(0, anchor='center', width=55)
         self.tree.column(1, width=175)
@@ -21,10 +25,29 @@ class Report(Frame):
         for col in headers:
             self.tree.heading(col, text=col.title())
         self.root.master.focus_force()
+        self.root.bind('<Key>', self.__keys) 
 
-    def render(self, pagerank, edge_counts, d, e):
+    def __keys(self, event):
+        if event.char == 'i':
+            self.t.set(self.t.get()-1)
+        elif event.char == 'o':
+            self.t.set(self.t.get()+1)
+
+    def __set_t(self, t=None):
+        self.render(self.pagerank, self.edge_counts, self.d, self.e, t=int(t))
+
+    def render(self, pagerank, edge_counts, d, e, t=None):
+        self.d, self.e = d, e
+        self.edge_counts = edge_counts
         self.pagerank = pagerank 
-        pr = pagerank[0][-1]
+        if t is not None:
+            pr = pagerank[0][t]
+        else:
+            self.t.config(command=None)
+            self.t.config(to=self.pagerank[1])
+            self.t.set(self.pagerank[1])
+            self.t.config(command=self.__set_t)
+            pr = pagerank[0][-1]
         label_text = 'Iterations:{0:>3}   Ranks:{1:>3}'.format(
                 self.pagerank[1], len(set(pr.values())))
         self.label.config(text=label_text)
@@ -37,7 +60,7 @@ class Report(Frame):
         if self.items: self.tree.delete(*self.items)
         self.items = [self.tree.insert('', 'end', values=line) for line in data]
         self.tree.pack(side='left', fill='y')
-        self.root.master.focus_force()
+        #self.root.master.focus_force()
 
     def destroy(self):
         super().destroy()

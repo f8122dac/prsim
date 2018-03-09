@@ -25,6 +25,7 @@ def pagerank(graph, damping=0.85, epsilon=1.0e-6):
     ranks_list = []
     ranks = {}
     for node in inlink_map.keys(): ranks[node] = initial_value
+    ranks_list.append(ranks)
     
     new_ranks = {}
     delta = 1.0
