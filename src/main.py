@@ -1,5 +1,5 @@
-from tkinter import Tk, Toplevel, Menu, Scale, Canvas, Button
-from tkinter.ttk import Frame, Labelframe
+from tkinter import Tk, Toplevel, Menu, Scale, Canvas
+from tkinter.ttk import Frame, Labelframe, Button, Label
 import matplotlib.pyplot as plt
 
 from utils.figure import draw_figure
@@ -26,16 +26,20 @@ class Main(Frame):
         self.windowsmenu.add_separator()
         self.windowsmenu.add_command(label="Quit", command=self.destroy)
         menubar.add_cascade(label="Windows", menu=self.windowsmenu)
-        settingmenu = Menu(menubar, tearoff=0)
-        settingmenu.add_command(label="Spectrum range")
-        settingmenu.add_command(label="Color scheme")
-        menubar.add_cascade(label="Setting", menu=settingmenu)
+        settingsmenu = Menu(menubar, tearoff=0)
+        settingsmenu.add_command(label="Spectrum range")
+        settingsmenu.add_command(label="Color scheme")
+        menubar.add_cascade(label="Settings", menu=settingsmenu)
         helpmenu = Menu(menubar, tearoff=0)
         helpmenu.add_command(label="Help", command=self.__help)
         helpmenu.add_separator()
         helpmenu.add_command(label="About", command=self.__about)
         menubar.add_cascade(label="Help", menu=helpmenu)
         self.root.config(menu=menubar)
+        # disabled menu items
+        settingsmenu.entryconfig(0, state='disabled')
+        settingsmenu.entryconfig(1, state='disabled')
+        helpmenu.entryconfig(0, state='disabled')
 
         # Scale
         ctrls = Labelframe(self, text='Control', relief='ridge')
@@ -59,7 +63,6 @@ class Main(Frame):
 
         # open windows
         self.__toggle_report()
-        #self.__toggle_search()
 
     def generate_model(self):
         edges, self.edge_counts = randEdges(self.d.get(), self.e.get())
@@ -100,7 +103,7 @@ class Main(Frame):
         ps = [[p[k] for p in self.pagerank[0]] for k in self.pagerank[0][0].keys()]
         for i in range(len(ps)):
             plt.plot(ts, ps[i])
-        _, _, w, h = fig.bbox.bounds
+        w, h = fig.bbox.bounds[2:]
 
         self.plot_root = Toplevel(self)
         self.plot_root.title(" ".join((APPNAME, VERSION, "| Plot")))
@@ -121,8 +124,6 @@ class Main(Frame):
             try: self.plot_root.destroy()
             except: pass
             plt.clf()
-        elif event.char == 's':
-            self.__toggle_search()
 
         elif event.char == 'n':
             self.__refresh()
@@ -149,7 +150,16 @@ class Main(Frame):
         pass
     
     def __about(self):
-        pass
+        try: self.a.destroy()
+        except: pass
+        about_text = "{} {}\n\nUW MATH308(Linear Algebra) Winter 2018".format(APPNAME, VERSION)
+        self.a = Toplevel(self)
+        f = Frame(self.a)
+        l = Label(f, text=about_text)
+        b = Button(f, text='Close', command=self.a.destroy)
+        l.pack(padx=5)
+        b.pack(pady=10)
+        f.pack(padx=50, pady=20)
             
     def destroy(self):
         try: self.r.destroy()

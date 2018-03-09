@@ -9,7 +9,7 @@ class Report(Frame):
         self.root = self.winfo_toplevel()
         self.root.title(" ".join((APPNAME, VERSION, "| Report")))
         self.items= None
-        headers = ('Page',' PageRank Value', 'Incoming')
+        headers = ('Page', 'Rank', 'PageRank Value', 'Incoming')
         self.label = Label(self, anchor='e')
         self.label.pack(fill='x')
         self.t = Scale(self, from_=0, to=1, label='nth iteration',
@@ -17,8 +17,9 @@ class Report(Frame):
         self.t.pack(fill='x')
         self.tree = Treeview(self, columns=headers, show="headings", height=REPORT_HEIGHT) 
         self.tree.column(0, anchor='center', width=55)
-        self.tree.column(1, width=175)
-        self.tree.column(2, anchor='center', width=55)
+        self.tree.column(1, anchor='center', width=55)
+        self.tree.column(2, width=175)
+        self.tree.column(3, anchor='center', width=55)
         self.scroll = Scrollbar(self, command=self.tree.yview)
         self.scroll.pack(side='right', fill='y')
         self.tree.config(yscrollcommand=self.scroll.set)
@@ -56,7 +57,8 @@ class Report(Frame):
             if tail is not head:
                 in_map[head] += n
 
-        data = tuple((k, pr[k], in_map[k]) for k in sorted(pr.keys()))
+        get_rank = lambda k: len(pr.keys())-sorted(pr.values()).index(pr[k])
+        data = tuple((k, get_rank(k), pr[k], in_map[k]) for k in sorted(pr.keys()))
         if self.items: self.tree.delete(*self.items)
         self.items = [self.tree.insert('', 'end', values=line) for line in data]
         self.tree.pack(side='left', fill='y')
