@@ -1,4 +1,4 @@
-def pagerank(graph, damping=0.85, epsilon=1.0e-6):
+def pagerank(graph, damping=.85, epsilon=1.0e-8):
     inlink_map = {}
     outlink_counts = {}
     
