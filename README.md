@@ -2,6 +2,12 @@
 
 ![screenshot](https://raw.githubusercontent.com/f8122dac/prsim/master/screenshot.png)
 
+--- 
+
+Project: Sorting the Infinite: Google's PageRank Algorithm
+
+Members: Yifei Chen, Sara LaPlante, Jesse Cho, Zixiao Huang
+
 ## Dependancy
 [Python3](https://www.python.org/downloads/), tkinter, matplotlib
 
