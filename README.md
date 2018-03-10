@@ -1,5 +1,7 @@
 # prsim
 
+![screenshot](https://raw.githubusercontent.com/f8122dac/prsim/master/screenshot.png)
+
 ## Dependancy
 [Python3](https://www.python.org/downloads/), tkinter, matplotlib
 
