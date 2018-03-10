@@ -22,24 +22,24 @@ or
    
 ### on Windows:
 
-    If you have setupt the dependancy, you can start by executing main.py file in src directory.
+If you have setupt the dependancy, you can start by executing `main.py` file in `src` directory.
 
 ### Keys:
 - Main window
   - `r`: show/hide report window
   - `n`: generate a new model
   - `p`: plot current model
-  - `x`: close plot
-  - `j`: 
-  - `k`:
-  - `h`:
-  - `l`:
-  - `J`: 
-  - `K`:
-  - `H`:
-  - `L`:
+  - `x`: close plot window
+  - `j`: decrease # of pages
+  - `k`: increase # of pages
+  - `J`: decrease # of pages by big steps
+  - `K`: increase # of pages by big steps
+  - `h`: decrease # of links
+  - `l`: increase # of links
+  - `H`: decrease # of links by big steps
+  - `L`: increase # of links by big steps
 - Report window  
-  - `i`: 
-  - `o`:
-  - `O`:
-  - `I`:
+  - `i`: decrease iteration slider
+  - `o`: increase iteration slider
+  - `I`: decrease iteration slider by big steps
+  - `O`: increase iteration slider by big steps

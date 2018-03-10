@@ -10,7 +10,7 @@ class Report(Frame):
         self.root.title(" ".join((APPNAME, VERSION, "| Report")))
         self.items= None
         headers = ('Page', 'Rank', 'PageRank Value', 'Incoming')
-        self.t = Scale(self, from_=0, to=1, label='t-th iteration',
+        self.t = Scale(self, from_=0, to=1, label='n-th iteration',
                 bd=1, width=7, orient='horizontal', command=self.__set_t)
         self.t.pack(fill='x')
         self.label = Label(self, anchor='e')
