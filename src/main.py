@@ -163,7 +163,11 @@ class Main(Frame):
         f.pack(padx=50, pady=20)
             
     def destroy(self):
-        try: self.r.destroy()
+        try: 
+            self.r.destroy()
+            self.plot_root.destroy()
+            plt.close('all')
+            del self.plot_fig
         except: pass
         super().destroy()
         self.root.destroy()
