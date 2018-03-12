@@ -2,7 +2,7 @@ from tkinter import Tk, Toplevel, Menu, Scale, Canvas
 from tkinter.ttk import Frame, Labelframe, Button, Label
 import matplotlib.pyplot as plt
 
-from utils.figure import draw_figure
+from utils.plot import draw_figure
 
 from config import *
 from utils.pagerank import pagerank
@@ -94,23 +94,10 @@ class Main(Frame):
     def __plot(self):
         try: self.plot_root.destroy()
         except: pass
-        plt.clf()
-        fig = plt.figure()
-        plt.xticks(list(range(0, self.pagerank[1]+1, 3)))
-        plt.xlabel('n-th iteration')
-        plt.ylabel('PageRank value')
-        ts =  list(range(self.pagerank[1]+1))
-        ps = [[p[k] for p in self.pagerank[0]] for k in self.pagerank[0][0].keys()]
-        for i in range(len(ps)):
-            plt.plot(ts, ps[i])
-        w, h = fig.bbox.bounds[2:]
-
         self.plot_root = Toplevel(self)
         self.plot_root.title(" ".join((APPNAME, VERSION, "| Plot")))
-        c = Canvas(self.plot_root, width=w, height=h)
-        self.plot_fig = draw_figure(c, fig)
-        c.pack()
-        self.focus_force()
+        draw_figure(self.plot_root, self.pagerank)
+        self.root.after(1, lambda : self.root.focus_force())
 
     def __keys(self, event):
         if event.char == 'q':
