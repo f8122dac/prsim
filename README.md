@@ -17,7 +17,7 @@ On Linux or OS X, you can install matplotlib by `pip install matplotlib` or `pyt
 
 On Windows, if you have a python3 installation you can probably install using pip with the the same command(though I haven't checked).
 
-## Release v0.0.2
+## Release v0.0.2-beta
 Download links for the executables:
 - [Windows](https://github.com/f8122dac/prsim/releases/download/v0.0.2/prsim-0.0.2.exe)
 - [OS X](https://github.com/f8122dac/prsim/releases/download/v0.0.2/Prsim-0.0.2.dmg)
