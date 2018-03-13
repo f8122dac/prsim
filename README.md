@@ -17,9 +17,13 @@ On Linux or OS X, you can install matplotlib by `pip install matplotlib` or `pyt
 
 On Windows, if you have a python3 installation you can probably install using pip with the the same command(though I haven't checked).
 
-If you don't have python3 installed and just want to run the program(and have more than 500MB to spare on your machine), [anaconda](https://www.anaconda.com/download/) is a nice default python installation that comes with a bunch of scientific computing packages, and it will just run with the default. Alternatively, install [miniconda](https://conda.io/miniconda.html) and on a terminal or Windows command line execute `conda install matplotlib tkinter`.
+## Release v0.0.2
+Download links for the executables:
+- [Windows](https://github.com/f8122dac/prsim/releases/download/v0.0.2/prsim-0.0.2.exe)
+- [OS X](https://github.com/f8122dac/prsim/releases/download/v0.0.2/Prsim-0.0.2.dmg)
 
-## How to run
+
+## How to run the source code
 ### On POSIX systems(Linux, OS X, etc):
 
     $ ./run.sh
