@@ -1,6 +1,7 @@
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
+
 def draw_figure(master, pagerank):
     #fig = Figure(figsize=(5,5))
     fig = Figure()

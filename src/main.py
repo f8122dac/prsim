@@ -1,6 +1,9 @@
+# fixed: OS X matplotlib crashing issue
+import matplotlib
+matplotlib.use("TkAgg")
+
 from tkinter import Tk, Toplevel, Menu, Scale, Canvas
 from tkinter.ttk import Frame, Labelframe, Button, Label
-import matplotlib.pyplot as plt
 
 from utils.plot import draw_figure
 
@@ -9,6 +12,7 @@ from utils.pagerank import pagerank
 from utils.edges import randEdges
 from graphviewer import GraphViewer
 from report import Report
+
 
 class Main(Frame):
     def __init__(self, *args, **kwargs):
