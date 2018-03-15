@@ -20,6 +20,7 @@ class Main(Frame):
         self.root = self.winfo_toplevel()
         self.root.option_add("*Font", "serif 10 bold")
         self.root.title(" ".join((APPNAME, VERSION, "| Main")))
+        self.root.resizable(0,0)
         self.root.bind('<Key>', self.__keys) 
 
         # Menu
@@ -100,6 +101,7 @@ class Main(Frame):
         except: pass
         self.plot_root = Toplevel(self)
         self.plot_root.title(" ".join((APPNAME, VERSION, "| Plot")))
+        self.plot_root.resizable(0,0)
         draw_figure(self.plot_root, self.pagerank)
         self.root.after(1, lambda : self.root.focus_force())
 

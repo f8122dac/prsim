@@ -8,6 +8,7 @@ class Report(Frame):
         super().__init__(*args, **kwargs)
         self.root = self.winfo_toplevel()
         self.root.title(" ".join((APPNAME, VERSION, "| Report")))
+        self.root.resizable(0,0)
         self.items= None
         headers = ('Page', 'Rank', 'PageRank Value', 'Incoming')
         self.t = Scale(self, from_=0, to=1, label='n-th iteration',
