@@ -8,7 +8,7 @@ Project: Sorting the Infinite: Google's PageRank Algorithm
 
 Members: Yifei Chen, Sara LaPlante, Jesse Cho, Zixiao Huang
 
-## Release v0.0.2-beta
+## Release v0.0.2
 Download links for the executables:
 - [Windows](https://github.com/f8122dac/prsim/releases/download/v0.0.2/prsim-0.0.2.exe)
 - [OS X](https://github.com/f8122dac/prsim/releases/download/v0.0.2/Prsim-0.0.2.dmg)
