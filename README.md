@@ -10,8 +10,8 @@ Members: Yifei Chen, Sara LaPlante, Jesse Cho, Zixiao Huang
 
 ## Release v0.0.2-beta
 Download links for the executables:
-- [Windows](https://github.com/f8122dac/prsim/releases/download/v0.0.2/prsim-0.0.2b.exe)
-- [OS X](https://github.com/f8122dac/prsim/releases/download/v0.0.2/Prsim-0.0.2b.dmg)
+- [Windows](https://github.com/f8122dac/prsim/releases/download/v0.0.2-beta/prsim-0.0.2b.exe)
+- [OS X](https://github.com/f8122dac/prsim/releases/download/v0.0.2-beta/Prsim-0.0.2b.dmg)
 
 
 ## How to run the source code
